@@ -1,0 +1,30 @@
+# of point
+11
+-0.5 -0.5
+-0.2 -0.5
+ 0.0  0.0
+ 0.2 -0.5
+ 0.5 -0.5
+ 0.5  0.5
+-0.5  0.5
+-0.1 -0.1
+-0.2 -0.3
+ 0.1 -0.1
+ 0.2 -0.3
+# of boundaries
+4
+# segments for boundary 0
+4
+0 1
+1 2
+2 3
+3 4
+# segments for boundary 1
+1
+4 5
+# segments for boundary 2
+1
+5 6
+# segments for boundary 3
+1
+6 0
