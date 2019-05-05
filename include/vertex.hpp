@@ -1,11 +1,13 @@
 
 #include "array_template.hpp"
+#include <array>            // std::array
+using namespace std;
 
-template<t, dimension=2, typename Rep = Array2D<T> >
+template<t, nDimensions=2 >
 class Vertex
 {
   private:
-    Rep point;   // (access to) the data of the array
+    std::array< T, nDimensions > elements_;   // (access to) the data of the array
 
   public:
 
