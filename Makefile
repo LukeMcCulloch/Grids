@@ -42,17 +42,15 @@ EXECUTABLE = test
 
 
 
-OBJECTS = tests_array.o tests_etarray.o main.o 
+OBJECTS = main.o 
 
 
 
 
  
 
-$(BUILD_DIR)/test: 	$(SRC_DIRS)/main.o  \
-						$(SRC_DIRS)/tests_array.o \
-						$(TEST_DIR)/tests_etarray.o 
-	$(CXX) 	$(SRC_DIRS)/main.cpp $(SRC_DIRS)/tests_array.cpp $(TEST_DIR)/tests_etarray.cpp -o $(BUILD_DIR)/test 
+$(BUILD_DIR)/test: 	$(SRC_DIRS)/main.o  
+	$(CXX) 	$(SRC_DIRS)/main.cpp  -o $(BUILD_DIR)/test 
 
 
 
@@ -96,11 +94,8 @@ $(BUILD_DIR)/test: 	$(SRC_DIRS)/main.o  \
 
 
 $(OBJECTS): arrayops.hpp array_template.hpp \
-			etmatrix.hpp etscalar.hpp etops1a.hpp \
-			etops1.hpp etops2.hpp \
-			testManager.hpp \
-			tests_etarray.cuh \
-			input.hpp geometry.hpp
+			etmatrix.hpp etops1.hpp etops1a.hpp \
+			 etops2.hpp etscalar.hpp  \
 
 .PHONY: clean
 
