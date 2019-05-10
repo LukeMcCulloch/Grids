@@ -81,6 +81,8 @@ class MeshViewer(object):
         
         
     def get_boundary(self):
+        """TODO: fix this for tri.mesh output
+        """
         self.nb = int(self.lines[self.epts+1].split()[0])
         self.bs = []
         p = self.epts+2
@@ -167,42 +169,63 @@ class MeshViewer(object):
         pts = self.plot_pts
         for i,el in enumerate(tris):
             #print el
-            xpts = np.asarray([ pts[el[0],0],pts[el[1],0],pts[el[2],0], pts[el[0],0] ])
-            ypts = np.asarray([ pts[el[0],1],pts[el[1],1],pts[el[2],1], pts[el[0],1] ])
+            elx = el[0]-1
+            ely = el[1]-1
+            elz = el[2]-1
+            xpts = np.asarray([ pts[elx,0],pts[ely,0],pts[elz,0], pts[elx,0] ])
+            ypts = np.asarray([ pts[elx,1],pts[ely,1],pts[elz,1], pts[elx,1] ])
             plt.plot(xpts,ypts )
             avgx =  xpts[:-1].sum()/len(xpts[:-1])
             avgy = ypts[:-1].sum()/len(ypts[:-1])
             #if self.verbose:
-            plt.plot(pts[el[0],0],
-                     pts[el[0],1],marker = 'o', color = 'black')
-            plt.annotate(str(el[0]), 
-                         xy=(pts[el[0],0],pts[el[0],1]))
-            plt.plot(pts[el[1],0],
-                     pts[el[1],1],marker = 'o', color = 'black' )
-            plt.annotate(str(el[1]), 
-                         xy=(pts[el[1],0],pts[el[1],1]))
-            plt.plot(pts[el[2],0],
-                     pts[el[2],1],marker = 'o', color = 'black' )
-            plt.annotate(str(el[2]), 
-                         xy=(pts[el[2],0],pts[el[2],1]))
+            plt.plot(pts[elx,0],
+                     pts[elx,1],marker = 'o', color = 'black')
+            plt.annotate(str(elx), 
+                         xy=(pts[elx,0],pts[elx,1]))
+            plt.plot(pts[ely,0],
+                     pts[ely,1],marker = 'o', color = 'black' )
+            plt.annotate(str(ely), 
+                         xy=(pts[ely,0],pts[ely,1]))
+            plt.plot(pts[elz,0],
+                     pts[elz,1],marker = 'o', color = 'black' )
+            plt.annotate(str(elz), 
+                         xy=(pts[elz,0],pts[elz,1]))
             plt.plot(avgx,
                      avgy)
             plt.annotate('{}'.format(i), xy=(avgx,avgy))
         if which is not None:
             for i,el in enumerate(tris):
                 #print el
-                xpts = np.asarray([ pts[el[0],0],pts[el[1],0],pts[el[2],0], pts[el[0],0] ])
-                ypts = np.asarray([ pts[el[0],1],pts[el[1],1],pts[el[2],1], pts[el[0],1] ])
+                elx = el[0]-1
+                ely = el[1]-1
+                elz = el[2]-1
+                xpts = np.asarray([pts[elx,0],
+                                   pts[ely,0],
+                                   pts[elz,0], 
+                                   pts[elx,0] ])
+                ypts = np.asarray([pts[elx,1],
+                                   pts[ely,1],
+                                   pts[elz,1], 
+                                   pts[elx,1] ])
                 plt.plot(xpts,ypts )
                 avgx =  xpts.sum()/len(xpts)
                 avgy = ypts.sum()/len(ypts)
                 #if self.verbose:
-                plt.plot(pts[el[0],0],pts[el[0],1],marker = 'o', color = 'black'  )
-                plt.annotate(str(el[0]), xy=(pts[el[0],0],pts[el[0],1]))#, xytext=(-1,-1))
-                plt.plot(pts[el[1],0],pts[el[1],1],marker = 'o', color = 'black'  )
-                plt.annotate(str(el[1]), xy=(pts[el[1],0],pts[el[1],1]))
-                plt.plot(pts[el[2],0],pts[el[2],1],marker = 'o', color = 'black'  )
-                plt.annotate(str(el[2]), xy=(pts[el[2],0],pts[el[2],1]))
+                plt.plot(pts[elx,0],
+                         pts[elx,1],marker = 'o', color = 'black'  )
+                plt.annotate(str(elx), 
+                             xy=(pts[elx,0],
+                                 pts[elx,1]))#, xytext=(-1,-1))
+                plt.plot(pts[ely,0],
+                         pts[ely,1],marker = 'o', color = 'black'  )
+                plt.annotate(str(ely), 
+                             xy=(pts[ely,0],
+                                 pts[ely,1]))
+                plt.plot(pts[elz,0],
+                         pts[elz,1],marker = 'o', color = 'black'  )
+                plt.annotate(str(elz),
+                             xy=(pts[elz,0],
+                                 pts[elz,1]))
                 plt.plot(avgx,avgy)
                 plt.annotate('T{}'.format(which), xy=(avgx,avgy))
                 which +=1
