@@ -123,7 +123,7 @@ int main(int argcs, char* pArgs[])
 
   // output trimesh in generic format
   filename[0]='\0';
-  strcat(filename,"tri.mesh");
+  strcat(filename,"output/tri.mesh");
   printf("\nFilename = <%s>",filename);
   // Open file for write
   if ((fp = fopen(filename,"w")) == 0)
@@ -168,7 +168,7 @@ int main(int argcs, char* pArgs[])
   // write GNUPLOT file
   //
   buff[0]='\0';
-  strcat(buff,"trimesh.dat");
+  strcat(buff,"output/trimesh.dat");
   printf("\nFilename = <%s>\n",buff);
   // Open file for write
   if ((fp = fopen(buff,"w")) == 0)

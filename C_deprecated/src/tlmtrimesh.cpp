@@ -16,7 +16,9 @@
 //----------------------------------------------------------------------------------------------------
 extern int search(int seed, double xt, double yt, double x[], double y[], int tri[][3], int nbr[][3]);
 extern void make_nbrs(int nn, int nt, int tri[][3], int nbr[][3]);
-int circle_test(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4);
+//int circle_test(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4);
+int circle_test(double (&a)[2], double (&b)[2], 
+                      double (&c)[2], double (&d)[2]);
 
 
 
@@ -273,7 +275,12 @@ void edge_flip(int j,int m,int testflip[6],int tri[][3],int nbr[][3], double tem
   //then get the test point - unshared m
   xt=tempx[d];
   yt=tempy[d];
-  cflagj=circle_test(x1,y1,x2,y2,x3,y3,xt,yt);
+  //cflagj=circle_test_tlm(x1,y1,x2,y2,x3,y3,xt,yt);
+  double tp1[2] = {x1,y1};
+  double tp2[2] = {x2,y2};
+  double tp3[2] = {x3,y3};
+  double tpt[2] = {xt,yt};
+  cflagj=circle_test( tp1,tp2,tp3,tpt );
   
 
   // Now do the Circle Test
@@ -288,7 +295,16 @@ void edge_flip(int j,int m,int testflip[6],int tri[][3],int nbr[][3], double tem
   //then get the test point - unshared j
   xt=tempx[b];
   yt=tempy[b];
-  cflagm=circle_test(x1,y1,x2,y2,x3,y3,xt,yt);
+  //cflagm=circle_test_tlm(x1,y1,x2,y2,x3,y3,xt,yt);
+  tp1[0] = x1;
+  tp1[1] = y1;
+  tp2[0] = x2;
+  tp2[1] = y2;
+  tp3[0] = x3;
+  tp3[1] = y3;
+  tpt[0] = xt;
+  tpt[1] = yt;
+  cflagm=circle_test( tp1,tp2,tp3,tpt );
 
 
   areaflag=0;
@@ -559,7 +575,12 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
 	   //then get the test point - unshared m
 	   xt=tempx[tri[m][q]];
 	   yt=tempy[tri[m][q]];
-	   flag=circle_test(x1,y1,x2,y2,x3,y3,xt,yt);
+	   //flag=circle_test(x1,y1,x2,y2,x3,y3,xt,yt);
+     double tp1[2] = {x1,y1};
+     double tp2[2] = {x2,y2};
+     double tp3[2] = {x3,y3};
+     double tpt[2] = {xt,yt};
+     flag=circle_test( tp1,tp2,tp3,tpt );
 	   if (!flag){
 	     //nt++;
 	     //printf("\nTriangle # %d, with nodes tri[j][0] = %d, tri[j][1] = %d, tri[j][2] = %d",j,tri[j][0], tri[j][1],tri[j][2] );
@@ -864,7 +885,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
    //printf("\nnt= %d",nt);
 
 
-   fp=fopen("tlmGNUplot.dat","w");
+   fp=fopen("output/tlmGNUplot.dat","w");
    for (i=0; i < nt; i++)
      {
        int n0 = tri[i][0];

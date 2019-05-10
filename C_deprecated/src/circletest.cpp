@@ -34,26 +34,37 @@ double magnitude( double x0, double y0, double x1, double y1){
   return vectormagnitude;
 }
 
-double determinant2(double e11, double e12, double e21, double e22){
+double determinant2(double e11, double e12, 
+                    double e21, double e22)
+{
   double det;
   det=e11*e22-e12*e21;
   return det;
 }
 
 double determinant3(double e11, double e12, double e13, 
-		    double e21, double e22, double e23,
-		    double e31, double e32, double e33){
+                    double e21, double e22, double e23,
+                    double e31, double e32, double e33)
+{
   double det;
   det=e11*(e22*e33-e32*e23)-e12*(e21*e33-e31*e23)+e13*(e21*e32-e31*e22);
   return det;
 }
+
+
+// Tests whether the turn formed by A, B, and C is ccw*:
+bool ccw(double (&A)[2], double (&B)[2], double  (&C)[2])
+{
+    return (B[0] - A[0]) * (C[1] - A[1]) > (B[1] - A[1]) * (C[0] - A[0]);
+}   
+    
 
 // Luke Mcculloch
 // Circle test
 // Nov 2011
 //*test point is (x4,y4)*/
 //*circle center is (xp,yp)*/
-int circle_test(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4){
+int circle_test_tlm(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4){
   int flag;
   double ssqr1, ssqr2, ssqr3;
   double a;
@@ -105,4 +116,30 @@ int circle_test(double x1, double y1, double x2, double y2, double x3, double y3
   }
   return flag;
 
+}
+
+
+
+        
+int circle_test(double (&a)[2], double (&b)[2], 
+                double (&c)[2], double (&d)[2]){
+    bool ccw_check = ccw(a,b,c);
+    //if ccw_check == True:
+    //#assert(ccw_check),'ERROR, coliniear nodes'
+    //#print 'ccw ok'
+    double dpx2 = d[0]*d[0];
+    double dpy2 = d[1]*d[1];
+    double det = determinant3(a[0]-d[0], a[1]-d[1], (a[0]*a[0]-dpx2)+(a[1]*a[1]-dpy2) , \
+                              b[0]-d[0], b[1]-d[1], (b[0]*b[0]-dpx2)+(b[1]*b[1]-dpy2) , \
+                              c[0]-d[0], c[1]-d[1], (c[0]*c[0]-dpx2)+(c[1]*c[1]-dpy2) ) ;
+    if (det>0.){
+        return 1;
+    }
+    else if (det<0.){
+        return 0;
+    }
+    else{
+        printf( "colinear" );
+        return 1;
+    }
 }
