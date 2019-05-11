@@ -30,24 +30,32 @@ double cross_product(double x1,double y1, double x2, double y2){
   return cp;
 }
 
-double dotproduct(double xo, double yo, double xp, double yp){
-  double dp;
-  //dp=0.0;
-  //for (i=0; i < 3; i++){
-  //dp=dp+testv1[i]*testv2[i];
-    dp=xo*xp+yo*yp;
-    //}  
-
-  return dp;
+double dotproduct(double xo, double yo, double xp, double yp)
+{
+  return xo*xp+yo*yp;
 }
 
-double mag( double x0, double y0, double x1, double y1){
+
+double mag( double x0, double y0, double x1, double y1)
+{
+
   double vectormagnitude;
 
   vectormagnitude=sqrt((x0-x1)*(x0-x1)+(y0-y1)*(y0-y1));
   
   return vectormagnitude;
 }
+
+
+double norm(double x0, double y0,
+            double x1, double y1)
+{
+    double difx = x0-x1;
+    double dify = y0-y1;
+    double dotp = dotproduct(difx,difx,dify,dify);
+    return sqrt(dotp);
+}
+
 
 
 
@@ -257,8 +265,15 @@ void edge_flip(int j,int m,int testflip[6],int tri[][3],int nbr[][3], double tem
 
   //Area Test Combined into Edge flipper
   
-  area1 = (tempx[c]-tempx[b])*(tempy[a]-tempy[b])-(tempx[a]-tempx[b])*(tempy[c]-tempy[b]);
-  area2 = (tempx[a]-tempx[d])*(tempy[c]-tempy[d])-(tempx[c]-tempx[d])*(tempy[a]-tempy[d]);
+  area1 = (tempx[c]-tempx[b])*\
+          (tempy[a]-tempy[b])-\
+          (tempx[a]-tempx[b])*\
+          (tempy[c]-tempy[b]);
+
+  area2 = (tempx[a]-tempx[d])*\
+          (tempy[c]-tempy[d])-\
+          (tempx[c]-tempx[d])*\
+          (tempy[a]-tempy[d]);
 
   //printf("\narea1= %e, area2= %e\n",area1, area2);
 
@@ -720,7 +735,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
     printf("\nStart of the boundaries loop");
     printf("\n");
     
-  //   //Loop over segments of each boundary
+    //Loop over segments of each boundary
     for (j=0;j<nbs[i];j++){
       printf("\n----------------------------");
       printf("\nStart of the loop over the segments of the boundary");
@@ -730,34 +745,34 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
       numtriangles = nhash[b1]->max;
 
       printf("\nThe number of triangles to be checked = %d",numtriangles);
-  //     //now loop over those triangles
-  //     for (z=0;z<numtriangles;z++){  
-  // 	printf("\nLoop over the Triangles from list Loop to check for exact fit");
-  // 	currenttriangle=nhash[b1]->list[z];       //  get current tri, index = z
-  // 	printf("\nThe Current triangle to be checked for exact fit is = %d",currenttriangle);
+      //  now loop over those triangles
+      //  for (z=0;z<numtriangles;z++){  
+      // 	printf("\nLoop over the Triangles from list Loop to check for exact fit");
+      // 	currenttriangle=nhash[b1]->list[z];       //  get current tri, index = z
+      // 	printf("\nThe Current triangle to be checked for exact fit is = %d",currenttriangle);
 
-  // 	// loop over each node in the triangles
-  //boundaryflag=0;
-  // 	//loop over each node
-  // 	for (m=0;m<3;m++){
-  // 	  n=tri[currenttriangle][m];   //tri shows up here, getting the node.
-  // 	  printf("\nLoop over each node in the triangle.  current node = %d",n);
-  // 	  printf("\nStart the Node flip loop b1 = %d, b2 = %d, n= %d",b1,b2,n );
+      // 	// loop over each node in the triangles
+      //boundaryflag=0;
+      // 	//loop over each node
+      // 	for (m=0;m<3;m++){
+      // 	  n=tri[currenttriangle][m];   //tri shows up here, getting the node.
+      // 	  printf("\nLoop over each node in the triangle.  current node = %d",n);
+      // 	  printf("\nStart the Node flip loop b1 = %d, b2 = %d, n= %d",b1,b2,n );
 
 
-  // 	  // The equality
-  // 	  if(b2==n){                    //2 found the node with the boundary.
-  // 	    boundaryflag=1;              //boundary is at node n
-  // 	    printf("\nBoundarydflag = %d", boundaryflag);
-  // 	    //printf("\n BoundaryFlag is now 1.  b1 = %d, n= %d",b1,b2,n );
-  // 	    printf("\nExit without Checking or Fliping the Edge");
-  // 	    printf("\nBecause the Triangle edge is aligned with the boundary");
-  // 	    m=3;//kick out of the loop for this triangle only.  It is fine.
-  // 	    //z=numtriangles;
-  // 	    printf("\n");
-  // 	  }
-	  //}	  
-	  //}
+      // 	  // The equality
+      // 	  if(b2==n){                    //2 found the node with the boundary.
+      // 	    boundaryflag=1;              //boundary is at node n
+      // 	    printf("\nBoundarydflag = %d", boundaryflag);
+      // 	    //printf("\n BoundaryFlag is now 1.  b1 = %d, n= %d",b1,b2,n );
+      // 	    printf("\nExit without Checking or Fliping the Edge");
+      // 	    printf("\nBecause the Triangle edge is aligned with the boundary");
+      // 	    m=3;//kick out of the loop for this triangle only.  It is fine.
+      // 	    //z=numtriangles;
+      // 	    printf("\n");
+      // 	  }
+      //}	  
+      //}
       
    
       printf("\n===================== On to the test");
@@ -768,110 +783,122 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
       //while(boundaryflag==0){
       //printf("\nBoundaryFlag==0, procede to DotProducts");
       for (z=0;z<numtriangles;z++){
-	printf("\n----------------------------");
-	printf("\nLoop over the triangles");
-	printf("\n");
-	  
-	currenttriangle=nhash[b1]->list[z];   //get current test tri, lindex = z
-	    
-	printf("\nThe current test triangle is = %d\n",currenttriangle);
-	    
-	for (m=0;m<3;m++){
-	  printf("\n----------------------------");
-	  printf("\nLoop over the nodes");
-	  printf("\n");
-	  printf("\nThe current test triangle =%d , tri node m = %d",currenttriangle, m);
-	  n=tri[currenttriangle][m];               // n=the node
-	  printf("\n Start the test loop b1 = %d, b2 = %d, n= %d",b1,b2,n );
+        // printf("\n----------------------------");
+        // printf("\nLoop over the triangles");
+        // printf("\n");
+          
+        currenttriangle=nhash[b1]->list[z];   //get current test tri, lindex = z
+            
+        printf("\nThe current test triangle is = %d\n",currenttriangle);
+            
+        for (m=0;m<3;m++){
+          // printf("\n----------------------------");
+          // printf("\nBC flipper:  Loop over the nodes");
+          // printf("\n");
+          // printf("\nThe current test triangle =%d , tri node m = %d",currenttriangle, m);
+          n=tri[currenttriangle][m];               // n=the node
+          //printf("\n Start the test loop b1 = %d, b2 = %d, n= %d",b1,b2,n );
 
-	    // The ray origin
-	    if(b1==n){
-	      bnode0=m;        
-	      printf("\nbnode = %d",m);
+          // The ray origin
+          if(b1==n){
+            bnode0=m;        
+            //printf("\nbnode = %d",m);
 
-	      //get the other points on the tri
-	      bnode1=(bnode0+1)%3;
-	      bnode2=(bnode0+2)%3;
-	    
-	      //Get the x,y points on the triangle in question
-	      xb1=tempx[tri[currenttriangle][bnode0] ];
-	      xb2=tempx[tri[currenttriangle][(bnode0+1)%3]];
-	      xb3=tempx[tri[currenttriangle][(bnode0+2)%3]];
-	    
+            //get the other points on the tri
+            bnode1=(bnode0+1)%3;
+            bnode2=(bnode0+2)%3;
+          
+            //Get the x,y points on the triangle in question
+            xb1=tempx[tri[currenttriangle][bnode0] ];
+            xb2=tempx[tri[currenttriangle][(bnode0+1)%3]];
+            xb3=tempx[tri[currenttriangle][(bnode0+2)%3]];
+          
 
-	      xb4=tempx[nbr[currenttriangle][(bnode0+1)%3]];
-	      //xb4=tempx[tri[currenttriangle][(b2)%3]];
-	      
-	      printf("\nxb1 = %g, xb2 = %g, xb3 = %g, xb4 = %g", xb1, xb2, xb3, xb4);
-	      
-	      yb1=tempy[tri[currenttriangle][bnode0] ];
-	      yb2=tempy[tri[currenttriangle][(bnode0+1)%3]];
-	      yb3=tempy[tri[currenttriangle][(bnode0+2)%3]];
-	      
-	      yb4=tempy[nbr[currenttriangle][(bnode0+1)%3]];
-	      //yb4=tempy[tri[currenttriangle][(b2)%3]];
-	      
-	      printf("\nyb1 = %g, xy2 = %g, xy3 = %g, xy4 = %g", yb1, yb2, yb3, yb4);
-	      
-	      v1x=xb2-xb1;
-	      v2x=xb3-xb1;
-	      v1y=yb2-yb1;
-	      v2y=yb3-yb1;
-	      
-	      bxray=xb4-xb1;
-	      byray=yb4-yb1;
-	      
-	      //get normals facing in!
-	      //first -second
-	      double vmag, xnormal1, ynormal1,xnormal2, ynormal2;
-	      vmag=mag(xb2,yb2,xb1,yb1);
-	      xnormal1 = -v1x/vmag;
-	      ynormal1 = v1y/vmag;
-	      vmag=mag(xb3,yb3,xb1,yb1);
-	      xnormal2 = -v2x/vmag;
-	      ynormal2 = v2y/vmag;
-	      
-	      
-	      
-	      
-	      //Compute Dot*Products
-	      double dp1, dp2;
-	      dp1=dotproduct(xnormal1, ynormal1, bxray, byray);
-	      dp2=dotproduct(xnormal2, ynormal2, bxray, byray);	
-	      
-	      printf("\nDot products 1 and 2 = %g, %g ", dp1,dp2);
-	      
-	      int neighbornode, rayneighbor;
-	      //Compute Needed Neighbor	   
-	      
-	      
-	      
-	      
-	      areaflag=0;
-	      if ( (dp1>0.-10e-14) && (dp2>0.-10e-15) ){
-		printf("\nSucess!");
-		rayneighbor=nbr[currenttriangle][(bnode0+1)%3];
-		if (rayneighbor!=-1){
-		  printf("\nCalling the boundary flipper");
-		  boundary_flip(currenttriangle,rayneighbor,testflip,tri,nbr,tempx,tempy, areaflag);
-		  flipcount=flipcount+1;
-		  printf("\nBoundaryFlipCount = %d",flipcount);
-		  
-		  make_nbrs(nn+4,tdim,tri,nbr);
-		  //make_nbrs(nb[],[0],(q+1)%3);		  
-		}
-	      }
-	      else {
-		printf("\nDid not trap the ray.  Procede to the next triangle.");
-		//boundaryflag=1;
-	      }
-	    }    
-	}
-	//boundaryflag=1;
-	
-	
-	
-	}
+            //xb4=tempx[nbr[currenttriangle][(bnode0+1)%3]];
+            xb4=tempx[tri[currenttriangle][(b2)%3]];
+            
+            //printf("\nxb1 = %g, xb2 = %g, xb3 = %g, xb4 = %g", xb1, xb2, xb3, xb4);
+            
+            yb1=tempy[tri[currenttriangle][bnode0] ];
+            yb2=tempy[tri[currenttriangle][(bnode0+1)%3]];
+            yb3=tempy[tri[currenttriangle][(bnode0+2)%3]];
+            
+            //yb4=tempy[nbr[currenttriangle][(bnode0+1)%3]];
+            yb4=tempy[tri[currenttriangle][(b2)%3]];
+            
+            //printf("\nyb1 = %g, xy2 = %g, xy3 = %g, xy4 = %g", yb1, yb2, yb3, yb4);
+            
+            v1x=xb2-xb1;
+            v1x=xb2-xb1;
+
+            v2x=xb3-xb1;
+            v2y=yb3-yb1;
+            
+            bxray=xb4-xb1;
+            byray=yb4-yb1;
+            
+            //get normals facing in!
+            //first -second
+            double vmag1, vmag2, xnormal1, ynormal1,xnormal2, ynormal2;
+            vmag1=mag(xb2,yb2,xb1,yb1);
+            //xnormal1 = -v1x/vmag1;
+            xnormal1 = v1x/vmag1;
+            ynormal1 = v1y/vmag1;
+
+            vmag2=mag(xb3,yb3,xb1,yb1);
+            //xnormal2 = -v2x/vmag2;
+            xnormal2 = v2x/vmag2;
+            ynormal2 = v2y/vmag2;
+            
+            
+            
+            
+            //Compute Dot*Products
+            double dp1, dp2;
+            dp1=dotproduct(-xnormal1, ynormal1, byray, bxray );
+            //  y1*bxray - x1*byray
+            dp2=dotproduct(-xnormal2, ynormal2, byray, bxray);	
+            
+            //printf("\nDot products 1 and 2 = %g, %g ", dp1,dp2);
+            
+            int neighbornode, rayneighbor;
+            //Compute Needed Neighbor	   
+            
+            
+            
+            
+            areaflag=0;
+            //if ( (dp1<0.-10e-14) && (dp2>0.-10e-15) ){
+            if ( (dp1<0.) && (dp2>0.) ){
+              printf("trapped the ray\n");
+              printf("   tri = %d",currenttriangle);
+              rayneighbor=nbr[currenttriangle][bnode1];
+              if (rayneighbor!=-1){
+                printf("  Calling the boundary flipper");
+                boundary_flip(currenttriangle,rayneighbor,
+                              testflip,tri,nbr,
+                              tempx,tempy, areaflag);
+                flipcount=flipcount+1;
+                //printf("  BoundaryFlipCount = %d",flipcount);
+                
+                make_nbrs(nn+4,tdim,tri,nbr);
+                //make_nbrs(nb[],[0],(q+1)%3);		
+                if (areaflag==1){
+                  break;
+                } 
+              }
+            }
+            else {
+              //printf("\nDid not trap the ray.  Procede to the next triangle.");
+              //boundaryflag=1;
+            }
+          }//end of (b1==n) branch
+          else if(b2==n){
+            break;
+          } 
+        }
+        //boundaryflag=1;
+	    }
     }
   }
   /**/

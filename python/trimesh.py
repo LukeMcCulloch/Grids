@@ -476,7 +476,7 @@ class trimesh(object):
                         xnormal1 = v1x/vmag1
                         ynormal1 = v1y/vmag1
                         #
-                        dp1 = np.dot(np.asarray([ynormal1,-xnormal1]),
+                        dp1 = np.dot(np.asarray([ynormal1 , -xnormal1]),
                                      np.asarray([bxray,byray]))
                         
                         
@@ -484,7 +484,7 @@ class trimesh(object):
                         xnormal2 = v2x/vmag2
                         ynormal2 = v2y/vmag2
                         #
-                        dp2 = np.dot(np.asarray([ynormal2,-xnormal2]),
+                        dp2 = np.dot(np.asarray([ynormal2 , -xnormal2]),
                                      np.asarray([bxray,byray]))
                         #print 'dp1 = ',dp1
                         #print 'dp2 = ',dp2
@@ -535,11 +535,11 @@ class trimesh(object):
                                             n = self.tri[t][i]
                                             nhash[n].append(t)
                                 
-                                if self.dopics and success: 
-                                    #print 'successful flip'
-                                    self.plot_mesh(
-                                                                plotboundary=True,
-                                                                show=True)
+                                    if self.dopics and success: 
+                                        #print 'successful flip'
+                                        self.plot_mesh(
+                                                                    plotboundary=True,
+                                                                    show=True)
                                     break
                                 #elif success:
                                 #    #print 'successful flip'
