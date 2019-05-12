@@ -58,7 +58,7 @@ int search(int seed, double xt, double yt, double x[], double y[], int tri[][3],
   flag=0.0;
   loop=1;
 
-  /*Start a loop at the beggining*/
+  /*Start a loop at the beginning*/
 
   t=0;
   while (loop!=0){
@@ -101,7 +101,7 @@ int search(int seed, double xt, double yt, double x[], double y[], int tri[][3],
 	//printf("\ninflag = %d",inflag);
 	if (inflag>2){
 	  /*We have found the triangle*/
-	  //printf("\nLuke Really Found the Triangle %d", t);
+	  //printf("\n Search Found Triangle %d", t);
 	  seed=t;
 	  loop=0;
 	}

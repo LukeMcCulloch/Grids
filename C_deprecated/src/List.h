@@ -29,6 +29,8 @@ class List
       list = 0;
     }
   }
+
+
   List(List* s) // copy constructor
   {
     int i;
@@ -37,6 +39,8 @@ class List
     for (i=0; i < s->max; i++)
       Add_To_List(s->list[i]);
   }
+
+
   List(List& s) // copy constructor
   {
     int i;
@@ -45,6 +49,8 @@ class List
     for (i=0; i < s.max; i++)
       Add_To_List(s.list[i]);
   }
+
+  
   List& operator=(List& s) // operator = for use when LHS already exists
   {
     int i;

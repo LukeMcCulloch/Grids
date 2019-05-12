@@ -351,15 +351,15 @@ class trimesh(object):
         """
         success = False
         for seg,bs in enumerate(self.bs):
-        #    pass
-        #if True:
-            #bs=self.bs[0]
+            print '----------------------------'
+            print 'start of the boundaries loop'
+            
             
             #print '\n\n ck New Boundary segment = ',[el+4 for el in bs]
             #nhash ==> node : tri   hashtable
             b1 = bs[1]+4
             b2 = bs[2]+4
-            print b1,b2
+            print "b1 = {}, b2 = {}".format(b1,b2)
             #numtriangles = len(nhash[b1]) # number of tri's using node b1
             # for triangle using node b1,
             #currenttriangle <= node b1 : tri num nhash[b1][z]
@@ -399,11 +399,22 @@ class trimesh(object):
             b2= 6
             self.currenttriangle = currenttriangle
             """
+            
+#            nhash = [] 
+#            for n in range(self.nn+4):
+#                nhash.append([])
+#            
+#            
+#            for t in range(self.nt):
+#                for i in range(3):
+#                    n = self.tri[t][i]
+#                    nhash[n].append(t)
+            
             #for z, currenttriangle in enumerate(nhash[b1]):
             while len(nhash[b1])>0:
                 currenttriangle =  nhash[b1].pop()
-                print 'currenttriangle = ',currenttriangle
-                # z=currenttriangle
+                #print 'currenttriangle = ',currenttriangle
+                #z=currenttriangle
                 # self.currenttriangle = currenttriangle
                 # m = 0
                 self.currenttriangle = currenttriangle
@@ -411,8 +422,12 @@ class trimesh(object):
                 for m in range(3): #loop nodes of current triangle
                     #print m #index of current node
                     n = self.tri[currenttriangle][m]  #print ' current node = ',n
+                    print '-----------------------------------'
+                    print ' The current test triangle ={} , tri node m = {}, n = {} '.format(
+                            currenttriangle,m,n)
+                    print 'trying tri ',n
                     if b1==n: #if ray origin
-                        #print 'found ray origin!',n
+                        print 'found a ray origin!',n
                         #for nbr_this in self.nbr[currenttriangle]:
                         #searchlist = [currenttriangle]+self.nbr[currenttriangle]
                         #for nbr_this in self.nbr[currenttriangle]:
@@ -495,12 +510,39 @@ class trimesh(object):
                         ct1 = -cross2d(np.asarray([bxray,byray]),vt1)[2]
                         ct2 = cross2d(np.asarray([bxray,byray]),vt2)[2]
                         
+#                        if currenttriangle==15:
+#                            print("\nCheck area cur tri=15")
+#                            print 'v1y = ',v1y
+#                            print("bnode0 = {}".format(bnode0))
+#                            print("bnode1 = {}".format(bnode1))
+#                            print("bnode2 = {}".format(bnode2))
+#                            print "vmag1 = {}, vmag2 = {}".format(vmag1, vmag2)
+#                            print "xnormal1 = {}, ynormal1 = {}".format(xnormal1, ynormal1)
+#                            print "byray = {}, bxray = {}".format(byray, bxray)
+#                            print("dp1 = P{}, dp2 = {}".format(dp1,dp2))
+                        
+                        if currenttriangle==18 or \
+                            currenttriangle==16 or \
+                            currenttriangle==15 or \
+                            currenttriangle==10 :
+                            print("\nCheck area cur tri={}".format(currenttriangle))
+                            print 'v1y = ',v1y
+                            print("bnode0 = {}".format(bnode0))
+                            print("bnode1 = {}".format(bnode1))
+                            print("bnode2 = {}".format(bnode2))
+                            print "vmag1 = {}, vmag2 = {}".format(vmag1, vmag2)
+                            print "xnormal1 = {}, ynormal1 = {}".format(xnormal1, ynormal1)
+                            print "byray = {}, bxray = {}".format(byray, bxray)
+                            print("dp1 = P{}, dp2 = {}".format(dp1,dp2))
+                        
                         #column 29
                         #if dp1>0 and dp2>0.:
                         #if dp1<0 and dp2<0.:
                         #if dp1>0 and dp2<0.:
                         if dp1<0. and dp2>0.:
                         #if ct1>0. and ct2>0.:
+                            print 'trapped the ray!'
+                            print '   tri = ',currenttriangle
                             raynbr = self.nbr[currenttriangle][bnode1]
                             if raynbr == -1:
                                 pass #print 'DONOT flip :: -1 boundary edge ', 
@@ -521,10 +563,13 @@ class trimesh(object):
                                 #               testflip)
                                 #flipcount +=1
                                 if success:
+                                    print 'edge flipped!, curtri was ',currenttriangle
+                                    print '\n'
                                     make_nbrs(self.nn+4,
                                               self.tdim, 
                                               self.tri, 
                                               self.nbr)
+                                    
                                     
                                     nhash = []
                                     for n in range(self.nn+4):
@@ -537,8 +582,7 @@ class trimesh(object):
                                 
                                     if self.dopics and success: 
                                         #print 'successful flip'
-                                        self.plot_mesh(
-                                                                    plotboundary=True,
+                                        self.plot_mesh(plotboundary=True,
                                                                     show=True)
                                     break
                                 #elif success:
@@ -556,7 +600,7 @@ class trimesh(object):
                         break
                     else:
                         pass
-                            
+                
                 #if success:
                 #    break
             #if success:
@@ -566,264 +610,6 @@ class trimesh(object):
                             
         return
         
-    def boundary_reconstructionOLD(self):
-        flipcount = 0
-        """
-        nhash ==> node : tri   hashtable
-            
-            {node:tri}
-            
-            #len(nhash) == len(self.pts)+4
-            
-            nhash[0] = [0, 1, 5]
-            node 0 is used in tris 0,1,5
-            
-            
-            self.bs[0,0,1]
-            self.bs[0,1,2]
-            self.bs[0,2,3]
-            
-            bs[0] is the 1st segment of side 0 & goes from node 0+4 to node 1+4
-            bs[1] is the 2nd segment of side 0 & goes from node 1+4 to node 2+4
-            
-            
-        
-        """
-        nhash = [] 
-        for n in range(self.nn+4):
-            nhash.append([])
-            
-        for t in range(self.nt):
-            for i in range(3):
-                n = self.tri[t][i]
-                nhash[n].append(t)
-                
-        #        for i in range(self.nb): #loop boundaries
-        #            for j in range(self.nbs[i]): #loop segments
-        #                b1=self.bs[i][j][0]+4
-        #                b2=self.bs[i][j][1]+4
-        ## oops, messed up bs indexes.  
-        ## lets use a bit more python
-        ## instead of fixing the indexes:
-        #chgs = True
-        #while chgs:
-        #
-        # bs=self.bs[0]
-        #
-        """
-        z=4
-        currenttriangle=15
-        
-        m=1
-        n=4
-        
-        """
-        success = False
-        for seg,bs in enumerate(self.bs):
-        #    pass
-        #if True:
-            #bs=self.bs[0]
-            
-            print '\n\n ck New Boundary segment = ',[el+4 for el in bs]
-            #nhash ==> node : tri   hashtable
-            b1 = bs[1]+4
-            b2 = bs[2]+4
-            #numtriangles = len(nhash[b1]) # number of tri's using node b1
-            # for triangle using node b1,
-            #currenttriangle <= node b1 : tri num nhash[b1][z]
-            
-            """  ## debug:
-            
-            
-            nhash = [] 
-            for n in range(self.nn+4):
-                nhash.append([])
-            
-            
-            for t in range(self.nt):
-                for i in range(3):
-                    n = self.tri[t][i]
-                    nhash[n].append(t)
-            
-            
-            
-            bs=self.bs[0]
-            
-            b1 = bs[1]+4
-            b2 = bs[2]+4
-            
-            
-            """
-            for z, currenttriangle in enumerate(nhash[b1]):
-                # z=1
-                # currenttriangle =  nhash[b1][z]
-                # self.currenttriangle = currenttriangle
-                # m = 0
-                self.currenttriangle = currenttriangle
-                print ' currenttriangle = ',currenttriangle, 'z = ',z
-                for m in range(3): #loop nodes of current triangle
-                    #print m #index of current node
-                    n = self.tri[currenttriangle][m]  #print ' current node = ',n
-                    if b1==n: #if ray origin
-                        print 'found ray origin!',n
-                        for nbr_this in self.nbr[currenttriangle]:
-                            
-                            if nbr_this is -1:
-                                continue
-                            
-                            #---------------------------------------
-                            #find the node in triangle j 
-                            #not shared with triangle m
-                            
-                            #print ' currenttriangle = ',currenttriangle
-                            #print 'nbr tri = ',nbr_this
-                            print 'outnode(m = {}, j={})'.format(currenttriangle,nbr_this)
-                            q=self.outnode(m=currenttriangle,
-                                           j=nbr_this)
-                            print 'outnode of nbr ',nbr_this,' is ',self.tri[nbr_this][q]
-                            #---------------------------------------
-                            
-                            ## get the test point - the unshared m  x,y coords                       
-                            #self.xt=self.tempx[self.tri[m][q]]
-                            #self.yt=self.tempy[self.tri[m][q]]
-                            #xb4    =self.tempx[self.tri[nbr_this][q]]
-                            #yb4    =self.tempy[self.tri[nbr_this][q]]
-                            
-                            bnode0 = m
-                            bnode1=(m+1)%3
-                            bnode2=(m+2)%3
-                            
-                            
-                            
-                            
-                            # self.tri[self.currenttriangle] <=> nodes of curr triangle
-                            #x,y of points on tri
-                            xb1=self.tempx[self.tri[self.currenttriangle][bnode0] ]
-                            xb2=self.tempx[self.tri[self.currenttriangle][bnode1]]
-                            xb3=self.tempx[self.tri[self.currenttriangle][bnode2]]
-                            """self.tri[self.currenttriangle]
-                            Out[120]: array([0, 1, 4])
-                            """
-                            #issue:
-                            #xb4=self.tempx[
-                            #        self.tri[nbr_this][bnode1] ]
-                            xb4=self.tempx[self.tri[nbr_this][q]]
-                            xb4 = self.tempx[b2]
-                            """
-                            In [116]:
-                            self.tri[self.nbr[self.currenttriangle]]
-                            Out[116]: 
-                            array([[0, 0, 0],
-                                   [4, 1, 5],
-                                   [3, 0, 4]])
-                            """
-                            yb1=self.tempy[self.tri[self.currenttriangle][bnode0] ]
-                            yb2=self.tempy[self.tri[self.currenttriangle][bnode1]]
-                            yb3=self.tempy[self.tri[self.currenttriangle][bnode2]]
-                            #yb4=self.tempy[
-                            #        self.tri[nbr_this][bnode1]  ]
-                            yb4=self.tempy[self.tri[nbr_this][q]]
-                            yb4 = self.tempy[b2]
-                            
-                            v1x=xb2-xb1
-                            v1y=yb2-yb1
-                            
-                            v2x=xb3-xb1
-                            v2y=yb3-yb1
-                            
-                            bxray=xb4-xb1
-                            byray=yb4-yb1
-                            
-                            #get normals facing in
-                            """
-                            when both normals are +
-                            you have trapped the ray
-                            """
-                            vec1 = np.asarray([xb1,yb1])
-                            vec2 = np.asarray([xb2,yb2])
-                            vec3 = np.asarray([xb3,yb3])
-                            
-                            
-                            vmag1 = np.linalg.norm(vec2-vec1)
-                            xnormal1 = -v1y/vmag1
-                            ynormal1 = v1x/vmag1
-                            #
-                            dp1 = np.dot(np.asarray([xnormal1,ynormal1]),
-                                         np.asarray([bxray,byray]))
-                            
-                            
-                            vmag2 = np.linalg.norm(vec3-vec1)
-                            xnormal2 = -v2y/vmag2
-                            ynormal2 = v2x/vmag2
-                            #
-                            dp2 = np.dot(np.asarray([xnormal2,ynormal2]),
-                                         np.asarray([bxray,byray]))
-                            #print 'dp1 = ',dp1
-                            #print 'dp2 = ',dp2
-                            
-                            #column 29
-                            if dp1>0 and dp2>0.:
-                                raynbr = nbr_this #self.nbr[currenttriangle][bnode1]
-                                if raynbr == -1:
-                                    print 'DONOT flip :: -1 boundary edge ', 
-                                if raynbr != -1: #-1 denotes a real edge in nbrs
-                                    #boundary flip needs to flip! 
-                                    print 'flip tri boundary edge ',(currenttriangle,'--',raynbr)
-                                    print 'curr tri = ', currenttriangle
-                                    print 'neighbor tri = ', nbr_this
-                                    print ''
-                                    # (that is what makes it different)
-                                    testflip = np.zeros(6,int)
-                                    success = self.boundary_flip(
-                                                            currenttriangle, 
-                                                            raynbr, 
-                                                            testflip)
-                                    #self.edge_flip(currenttriangle, 
-                                    #               raynbr, 
-                                    #               testflip)
-                                    flipcount +=1
-                                    make_nbrs(self.nn+4,
-                                              self.tdim, 
-                                              self.tri, 
-                                              self.nbr)
-                                    
-                                    nhash = []
-                                    for n in range(self.nn+4):
-                                        nhash.append([])
-                                        
-                                    for t in range(self.nt):
-                                        for i in range(3):
-                                            n = self.tri[t][i]
-                                            nhash[n].append(t)
-                                    
-                                    if self.dopics and success: 
-                                        print 'successful flip'
-                                        self.plot_mesh(
-                                                                    plotboundary=True,
-                                                                    show=True)
-                                    else:
-                                        print 'failed flip'
-                                    break
-                            else:
-                                print 'did nothing to tri currenttriangle = ',currenttriangle
-                                success = False
-                        
-                    elif b2==n: # found the node on the boundary.
-                        print 'boundary is on line'
-                        print 'curr tri = ', currenttriangle,'neighbor tri = ', nbr_this
-                        break
-                    else:
-                        pass
-                            
-                if success:
-                    break
-            #if success:
-            #    break
-                
-
-                            
-        return
-    
     
     
     def compute_optimized_nodes(self):
