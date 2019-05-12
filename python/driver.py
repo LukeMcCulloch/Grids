@@ -129,6 +129,6 @@ if __name__ == '__main__':
     mesh.verbose = False
     mesh.veryverbose = False
     mesh.boundary_reconstruction(
-            savesequence=True)
-    mesh.plot_mesh()
+            savesequence=False)
+    #mesh.plot_mesh()
     #"""

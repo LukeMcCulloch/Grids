@@ -220,7 +220,7 @@ void edge_flip(int j,int m,
   }
   if (tri[m][aa] == tri[j][bb]){
     printf("total logic faiure");
-    exit(0);
+    //exit(0);
   }
 
   // Index the seed nodes (0,1,2,3)
@@ -715,6 +715,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
   //If you've trapped the ray,
   //flip the triangle.
   //not hard.
+  int ll;
   int z; //=tnum # of triangles
   int b1,b2;
   int currenttriangle;
@@ -748,15 +749,17 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
   }
   
   // //Loop over # of boundaries
+  printf("\ntotal Number of boundaries = %d",nb);
   for (i=0;i<nb;i++){   //i<nb
     printf("\n----------------------------");
-    printf("\nStart of the boundaries loop");
-    printf("\n");
+    printf("\nStart of the boundaries loop, i = %d",i);
     
     //Loop over segments of each boundary
+    printf("\ntotal number seg this bdry = %d",nbs[i]);
     for (j=0;j<nbs[i];j++){
-      //printf("\n----------------------------");
-      //printf("\nStart of the loop over the segments of the boundary");
+      printf("\n=============================");
+      printf("\nStart of the loop over the segments of the boundary, j = %d",j);
+      printf("\n=============================");
       printf("\n");
       b1=bs[i][j][0]+4;
       b2=bs[i][j][1]+4;
@@ -765,7 +768,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
       numtriangles = nhash[b1]->max;
 
       printf("\n----------------------------");
-      printf("\nStart of the boundary (seg) loop");
+      printf("\nStart of the boundary (seg) loop\n");
       printf("b1 = %d, b2 = %d",b1,b2);
       //printf("\nThe number of triangles to be checked = %d",numtriangles);
       //  now loop over those triangles
@@ -805,13 +808,15 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
       //End of easy node finding (actually cut out)
       //while(boundaryflag==0){
       //printf("\nBoundaryFlag==0, procede to DotProducts");
-      for (z=0;z<numtriangles;z++){
       //int z=nhash[b1]->max;
       //while (nhash[b1]->max > 0){
       //while (!success & ){
-        // printf("\n----------------------------");
-        // printf("\nLoop over the triangles");
-        // printf("\n");
+      for (z=0;z<numtriangles;z++){
+        printf("\n----------------------------");
+        printf("\nLoop over the triangles, z = %d",z);
+        // where numtriangles:=
+        //            numtriangles = nhash[b1]->max;
+        printf("\n");
         //int z=nhash[b1]->max;
         currenttriangle=nhash[b1]->list[z];   //get current test tri, lindex = z
         //nhash[b1]->Delete_From_List(z);
@@ -819,15 +824,13 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
         //printf("\nThe current test triangle is = %d\n",currenttriangle);
             
         for (m=0;m<3;m++){
-          printf("\n----------------------------");
-          printf("\nBC flipper:  Loop over the nodes");
-          // printf("\n");
+          //printf("\n----------------------------");
+          printf("\nBC flipper:  Loop over the nodes, m = %d",m);
           n=tri[currenttriangle][m];               // n=the node
-          printf("\nThe current test triangle =%d , tri node m = %d, n = %d",currenttriangle, m,n);
-          //printf("\n Start the test loop b1 = %d, b2 = %d, n= %d",b1,b2,n );
-
+          //printf("\nThe current test triangle =%d , tri node m = %d, n = %d",currenttriangle, m,n);
+          
           printf("\ntrying tri %d",n);
-          success = false;
+          //success = false;
           // The ray origin
           if(b1==n){      
             printf("\n found a ray origin %d",n);
@@ -936,22 +939,23 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
                   //delete nhash;
                   //List **nhash;
                   //nhash = new List*[nn+4];
-                  // for(n=0;n<nn+4;n++){
-                  //   delete nhash[n];
-                  //   nhash[n]=new List();
-                  // }
+                  for(n=0;n<nn+4;n++){
+                    delete nhash[n];
+                    nhash[n]=new List();
+                  }
                   
-                  // // initial loops
-                  // // Add all points to the list
-                  // for (t=0;t<nt;t++){//loop all triangles
-                  //   for (i=0;i<3;i++){//loop all nodes
-                  //     n=tri[t][i];
-                  //     nhash[n]->Add_To_List(t);
-                  //   }
-                  // }
-
-                  m=3;
-                  break;
+                  // initial loops
+                  // Add all points to the list
+                  for (t=0;t<nt;t++){//loop all triangles
+                    for (ll=0;ll<3;ll++){//loop all nodes
+                      n=tri[t][ll];
+                      nhash[n]->Add_To_List(t);
+                    }
+                  }
+                  numtriangles = nhash[b1]->max;
+                  z=-1;
+                  m=-1;
+                  //break;
                 } 
               } // end if not edge of the manifold
             } // end area check for edge flip try condition
@@ -962,15 +966,14 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
             // }
           }//end of (b1==n) ray origin branch
           else if(b2==n){
-      	    //printf("\nExit without Checking or Fliping the Edge");
-      	    //printf("\nBecause the Triangle edge is aligned with the boundary");
+      	    printf("\nExit without Checking or Fliping the Edge");
+      	    printf("\nBecause the Triangle edge is aligned with the boundary");
             m=3;
+            printf("set m to 3=%d",m);
+            //break;
           } 
-
           //if (success) break;
         } //end scope of tri 3 loop
-
-
 	    }//end scope of numtriangles loop
     } //end scope of loop over boundary segments
   } //end scope of loop over boundaries

@@ -414,7 +414,9 @@ class trimesh(object):
             
             #for z, currenttriangle in enumerate(nhash[b1]):
             while len(nhash[b1])>0:
+                print '---------------------'
                 currenttriangle =  nhash[b1].pop()
+                print 'loop over the triangles in nhash[b1], len=',len(nhash[b1])
                 #print 'currenttriangle = ',currenttriangle
                 #z=currenttriangle
                 # self.currenttriangle = currenttriangle
@@ -424,12 +426,13 @@ class trimesh(object):
                 for m in range(3): #loop nodes of current triangle
                     #print m #index of current node
                     n = self.tri[currenttriangle][m]  #print ' current node = ',n
-                    print '-----------------------------------'
+                    #print 'n=',n
+                    #print '-----------------------------------'
                     print ' The current test triangle ={} , tri node m = {}, n = {} '.format(
                             currenttriangle,m,n)
-                    print 'trying tri ',n
+                    #print 'trying tri ',n
                     if b1==n: #if ray origin
-                        print 'found a ray origin!',n
+                        #print 'found a ray origin!',n
                         #for nbr_this in self.nbr[currenttriangle]:
                         #searchlist = [currenttriangle]+self.nbr[currenttriangle]
                         #for nbr_this in self.nbr[currenttriangle]:
