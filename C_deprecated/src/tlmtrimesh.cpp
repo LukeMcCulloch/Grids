@@ -950,6 +950,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
                   //   }
                   // }
 
+                  m=3;
                   break;
                 } 
               } // end if not edge of the manifold
@@ -957,12 +958,14 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
             // else {
             //   //printf("\nDid not trap the ray.  Procede to the next triangle.");
             //   //boundaryflag=1;
-            //   break;
+            //break;
             // }
           }//end of (b1==n) ray origin branch
-          //else if(b2==n){
-          //   break;
-          // } 
+          else if(b2==n){
+      	    //printf("\nExit without Checking or Fliping the Edge");
+      	    //printf("\nBecause the Triangle edge is aligned with the boundary");
+            m=3;
+          } 
 
           //if (success) break;
         } //end scope of tri 3 loop

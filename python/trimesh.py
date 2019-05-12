@@ -297,8 +297,10 @@ class trimesh(object):
     
     
     
-    def boundary_reconstruction(self):
+    def boundary_reconstruction(self, savesequence=False):
         #flipcount = 0
+        if savesequence:
+            pltnum = 1
         """
         nhash ==> node : tri   hashtable
             
@@ -584,6 +586,15 @@ class trimesh(object):
                                         #print 'successful flip'
                                         self.plot_mesh(plotboundary=True,
                                                                     show=True)
+                                    
+                                    if savesequence:
+                                        plt = self.plot_mesh(plotboundary=True,
+                                                       show=True,
+                                                       return_plt=True)
+                                        plotname = 'sequence/trimesh_seq'+str(pltnum)+'.png'
+                                        plt.savefig(plotname)
+                                        plt.close()
+                                        pltnum += 1
                                     break
                                 #elif success:
                                 #    #print 'successful flip'
@@ -1038,14 +1049,18 @@ class trimesh(object):
 
     def plot_mesh(self,
                   plotboundary=False,
-                  show=False):
+                  show=False,
+                  return_plt=False):
         self.plot_tris(self.tri[0:self.nt],
                        plotboundary=plotboundary,
                        show=show)
         plt.axis('equal')
         #plt.savefig('mesh/'+str(self.piccount)+'.png', format='png')
         self.piccount += 1
-        return
+        if return_plt:
+            return plt
+        else:
+            return
     
     def set_plot_pts(self):
         xpts = self.tempx
