@@ -656,7 +656,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
 	     // //============================================================
 	     
 	    if(areaflag==1){
-        printf("\nFlip Connectivity Accepted");
+        //printf("\nFlip Connectivity Accepted");
         make_nbrs(nn+4,tdim,tri,nbr);
         Optimize -> Add_To_List(j);  // Flipped Tri retains its j number as the same old real number.
         Optimize -> Add_To_List(m);

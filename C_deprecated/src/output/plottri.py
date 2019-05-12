@@ -8,13 +8,19 @@ class MeshViewer(object):
     file output by the trimesher 
     and plot the triangles
     """
-    def __init__(self, filename = r'tri.mesh'):
+    def __init__(self, filename = r'tri.mesh',
+                 verbose=False):
         self.cur_ln         = 0
         self.figcount       = 0
         self.piccount       = 0
+        self.verbose = verbose
+        print 'reading input'
         self.read_input(filename)
+        print 'get pts'
         self.get_pts()
+        print 'get blocks'
         self.get_blocks()
+        print 'get tris'
         self.get_tris()
         #self.get_boundary()
         
@@ -165,8 +171,12 @@ class MeshViewer(object):
         plotboundary=False
         show=False
         """
+        print 'plot tris'
         self.set_plot_pts()
         pts = self.plot_pts
+        mmark = " "
+        if self.verbose:
+            mmark = 'o'
         for i,el in enumerate(tris):
             #print el
             elx = el[0]-1
@@ -177,22 +187,24 @@ class MeshViewer(object):
             plt.plot(xpts,ypts )
             avgx =  xpts[:-1].sum()/len(xpts[:-1])
             avgy = ypts[:-1].sum()/len(ypts[:-1])
-            #if self.verbose:
             plt.plot(pts[elx,0],
-                     pts[elx,1],marker = 'o', color = 'black')
-            plt.annotate(str(elx), 
-                         xy=(pts[elx,0],pts[elx,1]))
+                     pts[elx,1],marker = mmark, color = 'black')
             plt.plot(pts[ely,0],
-                     pts[ely,1],marker = 'o', color = 'black' )
-            plt.annotate(str(ely), 
-                         xy=(pts[ely,0],pts[ely,1]))
+                     pts[ely,1],marker = mmark, color = 'black' )
             plt.plot(pts[elz,0],
-                     pts[elz,1],marker = 'o', color = 'black' )
-            plt.annotate(str(elz), 
-                         xy=(pts[elz,0],pts[elz,1]))
+                     pts[elz,1],marker = mmark, color = 'black' )
             plt.plot(avgx,
-                     avgy)
-            plt.annotate('{}'.format(i), xy=(avgx,avgy))
+                     avgy, color = 'black' )
+            if self.verbose:
+                plt.annotate(str(elx), 
+                         xy=(pts[elx,0],pts[elx,1]))
+                plt.annotate(str(ely), 
+                         xy=(pts[ely,0],pts[ely,1]))
+                plt.annotate(str(ely), 
+                         xy=(pts[ely,0],pts[ely,1]))
+                plt.annotate(str(elz), 
+                         xy=(pts[elz,0],pts[elz,1]))
+                plt.annotate('{}'.format(i), xy=(avgx,avgy))
         if which is not None:
             for i,el in enumerate(tris):
                 #print el
@@ -227,12 +239,14 @@ class MeshViewer(object):
                              xy=(pts[elz,0],
                                  pts[elz,1]))
                 plt.plot(avgx,avgy)
-                plt.annotate('T{}'.format(which), xy=(avgx,avgy))
+                if self.verbose:
+                    plt.annotate('T{}'.format(which), xy=(avgx,avgy))
                 which +=1
         if pt is not None:
-            plt.plot(pt[0],pt[1], marker = 'o', color = 'red' )
+            plt.plot(pt[0],pt[1], marker = 'o', color = 'black' )
         
         if plotboundary:
+            print 'plot boundary'
             #todo: self.plot_boundary()
             for el in self.bs:
                 p1 = self.pts[el[1]]
@@ -273,6 +287,7 @@ class MeshViewer(object):
         plotboundary=False
         show=Flase
         """
+        print 'plot mesh'
         self.plot_tris(self.tri[0:self.nt],
                        plotboundary=plotboundary,
                        show=show)
