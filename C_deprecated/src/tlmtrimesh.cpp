@@ -694,7 +694,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
      free(Optimize);
 
 
-     printf("\n n = %d, nt = %d",n, nt);
+     //printf("\n n = %d, nt = %d",n, nt);
   } // n Loop to insert all points
   
 
@@ -751,25 +751,29 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
   // //Loop over # of boundaries
   printf("\ntotal Number of boundaries = %d",nb);
   for (i=0;i<nb;i++){   //i<nb
-    printf("\n----------------------------");
-    printf("\nStart of the boundaries loop, i = %d",i);
-    
+    /*
+    //printf("\n----------------------------");
+    //printf("\nStart of the boundaries loop, i = %d",i);
+    /**/
     //Loop over segments of each boundary
     printf("\ntotal number seg this bdry = %d",nbs[i]);
     for (j=0;j<nbs[i];j++){
-      printf("\n=============================");
-      printf("\nStart of the loop over the segments of the boundary, j = %d",j);
-      printf("\n=============================");
-      printf("\n");
+      /*
+      // printf("\n=============================");
+      // printf("\nStart of the loop over the segments of the boundary, j = %d",j);
+      // printf("\n=============================");
+      //printf("\n");
+      /**/
       b1=bs[i][j][0]+4;
       b2=bs[i][j][1]+4;
       //b1=bs[j][i][0]+4;
       //b2=bs[j][i][1]+4;
       numtriangles = nhash[b1]->max;
-
-      printf("\n----------------------------");
-      printf("\nStart of the boundary (seg) loop\n");
-      printf("b1 = %d, b2 = %d",b1,b2);
+      /*
+      // printf("\n----------------------------");
+      // printf("\nStart of the boundary (seg) loop\n");
+      // printf("b1 = %d, b2 = %d",b1,b2);
+      /**/
       //printf("\nThe number of triangles to be checked = %d",numtriangles);
       //  now loop over those triangles
       //  for (z=0;z<numtriangles;z++){  
@@ -812,11 +816,13 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
       //while (nhash[b1]->max > 0){
       //while (!success & ){
       for (z=0;z<numtriangles;z++){
+        /*
         printf("\n----------------------------");
         printf("\nLoop over the triangles, z = %d",z);
+        /**/
         // where numtriangles:=
         //            numtriangles = nhash[b1]->max;
-        printf("\n");
+        /*printf("\n");/**/
         //int z=nhash[b1]->max;
         currenttriangle=nhash[b1]->list[z];   //get current test tri, lindex = z
         //nhash[b1]->Delete_From_List(z);
@@ -825,15 +831,17 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
             
         for (m=0;m<3;m++){
           //printf("\n----------------------------");
-          printf("\nBC flipper:  Loop over the nodes, m = %d",m);
+          /*printf("\nBC flipper:  Loop over the nodes, m = %d",m);
+          /**/
           n=tri[currenttriangle][m];               // n=the node
           //printf("\nThe current test triangle =%d , tri node m = %d, n = %d",currenttriangle, m,n);
           
-          printf("\ntrying tri %d",n);
+          /*printf("\ntrying tri %d",n);
+          /**/
           //success = false;
           // The ray origin
           if(b1==n){      
-            printf("\n found a ray origin %d",n);
+            //printf("\n found a ray origin %d",n);
 
             //get the points on the tri
             bnode0=m;  
@@ -894,33 +902,33 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
             int neighbornode, rayneighbor;
             //Compute Needed Neighbor	   
             
-            if (currenttriangle==18 || \
-                 currenttriangle==16 || \
-                 currenttriangle==15 || \
-                 currenttriangle==10 ){
-              printf("\n\nCheck area cur tri=%d",currenttriangle);
-              printf("\nv1y = %f",v1y);
-              printf("\nbnode0 = %d",bnode0);
-              printf("\nbnode1 = %d",bnode1);
-              printf("\nbnode2 = %d",bnode2);
-              printf("\nvmag1 = %f, vmag2 = %f",vmag1,vmag2);
-              printf("\nxnormal1 = %f, ynormal1 = %f",xnormal1,ynormal1);
-              printf("\nbyray = %f, bxray = %f",byray,bxray);
-              printf("\ndp1 = %f, dp2 = %f",dp1,dp2);
-            }
+            // if (currenttriangle==18 || \
+            //      currenttriangle==16 || \
+            //      currenttriangle==15 || \
+            //      currenttriangle==10 ){
+            //   printf("\n\nCheck area cur tri=%d",currenttriangle);
+            //   printf("\nv1y = %f",v1y);
+            //   printf("\nbnode0 = %d",bnode0);
+            //   printf("\nbnode1 = %d",bnode1);
+            //   printf("\nbnode2 = %d",bnode2);
+            //   printf("\nvmag1 = %f, vmag2 = %f",vmag1,vmag2);
+            //   printf("\nxnormal1 = %f, ynormal1 = %f",xnormal1,ynormal1);
+            //   printf("\nbyray = %f, bxray = %f",byray,bxray);
+            //   printf("\ndp1 = %f, dp2 = %f",dp1,dp2);
+            // }
             
             areaflag=0;
             success = false;
             //if ( (dp1<0.-10e-14) && (dp2>0.-10e-15) ){
             if ( (dp1<0.) && (dp2>0.) ){
-              printf("\ntrapped the ray\n");
-              printf("   tri = %d",currenttriangle);
+              //printf("\ntrapped the ray\n");
+              //printf("   tri = %d",currenttriangle);
               rayneighbor=nbr[currenttriangle][bnode1];
               if (rayneighbor==-1){
                 //python pass == c blank
               }
               else if (rayneighbor!=-1){
-                printf("\n  Calling the boundary flipper");
+                //printf("\n  Calling the boundary flipper");
                 success = boundary_flip(  currenttriangle,
                                           rayneighbor,
                                           testflip,tri,nbr,
@@ -929,7 +937,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
 
                 		
                 if (success){
-                  printf("\n  edge flipped curtri was %d",currenttriangle);
+                  //printf("\n  edge flipped curtri was %d",currenttriangle);
                   
                   make_nbrs(nn+4,tdim,tri,nbr);
                   //make_nbrs(nb[],[0],(q+1)%3);
@@ -966,10 +974,10 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
             // }
           }//end of (b1==n) ray origin branch
           else if(b2==n){
-      	    printf("\nExit without Checking or Fliping the Edge");
-      	    printf("\nBecause the Triangle edge is aligned with the boundary");
+      	    //printf("\nExit without Checking or Fliping the Edge");
+      	    //printf("\nBecause the Triangle edge is aligned with the boundary");
             m=3;
-            printf("set m to 3=%d",m);
+            //printf("set m to 3=%d",m);
             //break;
           } 
           //if (success) break;

@@ -130,5 +130,5 @@ if __name__ == '__main__':
     mesh.veryverbose = False
     mesh.boundary_reconstruction(
             savesequence=False)
-    #mesh.plot_mesh()
+    mesh.plot_mesh()
     #"""

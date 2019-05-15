@@ -139,17 +139,17 @@ class MeshViewer(object):
         for n in range(self.nn):
             self.tempx[n+4] = self.pts[n,0]
             self.tempy[n+4] = self.pts[n,1]
-        self.tempx[0]=self.xmin 
-        self.tempx[1]=self.xmax
-        self.tempx[2]=self.xmax 
-        self.tempx[3]=self.xmin
-        self.tempy[0]=self.ymin 
-        self.tempy[1]=self.ymin 
-        self.tempy[2]=self.ymax 
-        self.tempy[3]=self.ymax
+#        self.tempx[0]=self.xmin 
+#        self.tempx[1]=self.xmax
+#        self.tempx[2]=self.xmax 
+#        self.tempx[3]=self.xmin
+#        self.tempy[0]=self.ymin 
+#        self.tempy[1]=self.ymin 
+#        self.tempy[2]=self.ymax 
+#        self.tempy[3]=self.ymax
         
-        self.tri[0] = [0,1,2]
-        self.tri[1] = [0,2,3]
+        #self.tri[0] = [0,1,2]
+        #self.tri[1] = [0,2,3]
         
         self.nt += 2
         return
@@ -177,34 +177,35 @@ class MeshViewer(object):
         mmark = " "
         if self.verbose:
             mmark = 'o'
-        for i,el in enumerate(tris):
+        for i,el in enumerate(tris[3:]):
             #print el
-            elx = el[0]-1
-            ely = el[1]-1
-            elz = el[2]-1
-            xpts = np.asarray([ pts[elx,0],pts[ely,0],pts[elz,0], pts[elx,0] ])
-            ypts = np.asarray([ pts[elx,1],pts[ely,1],pts[elz,1], pts[elx,1] ])
-            plt.plot(xpts,ypts )
-            avgx =  xpts[:-1].sum()/len(xpts[:-1])
-            avgy = ypts[:-1].sum()/len(ypts[:-1])
-            plt.plot(pts[elx,0],
-                     pts[elx,1],marker = mmark, color = 'black')
-            plt.plot(pts[ely,0],
-                     pts[ely,1],marker = mmark, color = 'black' )
-            plt.plot(pts[elz,0],
-                     pts[elz,1],marker = mmark, color = 'black' )
-            plt.plot(avgx,
-                     avgy, color = 'black' )
-            if self.verbose:
-                plt.annotate(str(elx), 
-                         xy=(pts[elx,0],pts[elx,1]))
-                plt.annotate(str(ely), 
-                         xy=(pts[ely,0],pts[ely,1]))
-                plt.annotate(str(ely), 
-                         xy=(pts[ely,0],pts[ely,1]))
-                plt.annotate(str(elz), 
-                         xy=(pts[elz,0],pts[elz,1]))
-                plt.annotate('{}'.format(i), xy=(avgx,avgy))
+            if True:#not np.any( [ (pe in self.supernodes) for pe in el ]):
+                elx = el[0]-1
+                ely = el[1]-1
+                elz = el[2]-1
+                xpts = np.asarray([ pts[elx,0],pts[ely,0],pts[elz,0], pts[elx,0] ])
+                ypts = np.asarray([ pts[elx,1],pts[ely,1],pts[elz,1], pts[elx,1] ])
+                plt.plot(xpts,ypts )
+                avgx =  xpts[:-1].sum()/len(xpts[:-1])
+                avgy = ypts[:-1].sum()/len(ypts[:-1])
+                plt.plot(pts[elx,0],
+                         pts[elx,1],marker = mmark, color = 'black')
+                plt.plot(pts[ely,0],
+                         pts[ely,1],marker = mmark, color = 'black' )
+                plt.plot(pts[elz,0],
+                         pts[elz,1],marker = mmark, color = 'black' )
+                plt.plot(avgx,
+                         avgy, color = 'black' )
+                if self.verbose:
+                    plt.annotate(str(elx), 
+                             xy=(pts[elx,0],pts[elx,1]))
+                    plt.annotate(str(ely), 
+                             xy=(pts[ely,0],pts[ely,1]))
+                    plt.annotate(str(ely), 
+                             xy=(pts[ely,0],pts[ely,1]))
+                    plt.annotate(str(elz), 
+                             xy=(pts[elz,0],pts[elz,1]))
+                    plt.annotate('{}'.format(i), xy=(avgx,avgy))
         if which is not None:
             for i,el in enumerate(tris):
                 #print el
@@ -320,5 +321,5 @@ class MeshViewer(object):
         
     
 if __name__ == """__main__""":
-    self = MeshViewer()
+    self = MeshViewer(verbose=False)
     self.plot_mesh()
