@@ -122,6 +122,7 @@ int main(int argcs, char* pArgs[])
   char filename[32];
 
   // output trimesh in generic format
+  printf("output trimesh in generic format");
   filename[0]='\0';
   strcat(filename,"output/tri.mesh");
   printf("\nFilename = <%s>",filename);
@@ -193,6 +194,7 @@ int main(int argcs, char* pArgs[])
 
   delete[] x;
   delete[] y;
+
 
   return 0;
 }

@@ -13,6 +13,7 @@
 #include "../include/etops2.hpp"
 #include "../include/etscalar.hpp"
 
+#include "grids.hpp"
 
 // #include "etops1.hpp"
 // #include "etscalar.hpp"
@@ -69,7 +70,20 @@ void compare (T const& c, R const& z,
 //int etarraybasic (SolverManager& SM){
 int main (){
 
+    quad<2> ncube;
+    ncube.corners[0][0] = 0.;
+    ncube.corners[1][0] = 0.;
 
+    ncube.corners[0][1] = 1.;
+    ncube.corners[1][1] = 0.;
+
+    ncube.corners[0][2] = 1.;
+    ncube.corners[1][2] = 1.;
+
+    ncube.corners[0][3] = 0.;
+    ncube.corners[1][3] = 1.;
+
+    std::cout<< "ncube" <<std::endl;
 
     int np = 10;
 

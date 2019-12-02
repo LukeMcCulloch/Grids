@@ -321,4 +321,5 @@ class MeshViewer(object):
     
 if __name__ == """__main__""":
     self = MeshViewer()
+    print 'plot it'
     self.plot_mesh()

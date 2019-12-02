@@ -6,6 +6,7 @@
 
 int List::Redimension(int size)
 {
+  printf("\nRedimension %d",size);
   if (size <= 0)
   {
     if (list != 0)

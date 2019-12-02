@@ -373,6 +373,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
   double *tempx, *tempy, xt, yt;
   double x1,x2,x3,y1,y2,y3;
 
+  printf("\nTrimesh...");
 
   seed=0;
   /*Set outer limits*/
@@ -430,7 +431,9 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
 
   // make neighbors using your routine
   nbr = new int[tdim][3];
+  printf("\nCall make_nbrs");
   make_nbrs(nn+4,tdim,tri,nbr);
+  printf("\nReturn make_nbrs");
   
   /* print out neighbors for each triangle */
   // for (t=0; t < nt; t++){
@@ -451,7 +454,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
 
   //======================
   /*Start inserting Points*/
-
+  printf("start inserting points");
   for (n=4; n<(nn+4); n++){
     //printf("\n|-----------------------|");
     //printf("\n| Inserting Point %d     ", n);
@@ -477,12 +480,13 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
  
     // Find Triangle Containing Point
     // get the seed triangle, stores last value
+    //printf("\nSearch...");
     seed = search(seed,xt,yt,tempx,tempy,tri,nbr);
-    //printf("\nThe                     ");
-    //printf("\n    Search              ");
-    //printf("\n           Has          ");
-    //printf("\n               Returned!");
-    //printf("\nWe found a pt in triangle %d",seed);  ////////////////////////////Check this triangle for sense making
+    // printf("\nThe                     ");
+    // printf("\n    Search              ");
+    // printf("\n           Has          ");
+    // printf("\n               Returned!");
+    // printf("\nWe found a pt in triangle %d",seed);  ////////////////////////////Check this triangle for sense making
 
 
     // save nodes and neighbors of old triangle
@@ -1007,6 +1011,7 @@ int trimesh(int nn, int tdim, int nb, int nbs[], int ***bs, double x[], double y
    delete[] tempy;
 
 
+   delete nhash;
 
    return (nt);
 }  
