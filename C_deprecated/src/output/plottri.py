@@ -1,6 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import matplotlib.tri
+
+import matplotlib.tri.triangulation as triplt
+
 from random import randint, seed
 
 class MeshViewer(object):
@@ -116,6 +120,7 @@ class MeshViewer(object):
         self.ymin=10e20
         self.xmax=10e-20
         self.ymax=10e-20
+        
 #        for n in range(self.mesh.nn):
 #            self.xmin = min(self.xmin, self.mesh.pts[0,n])
 #            self.xmax = min(self.xmax, self.mesh.pts[0,n])
@@ -139,6 +144,7 @@ class MeshViewer(object):
         for n in range(self.nn):
             self.tempx[n+4] = self.pts[n,0]
             self.tempy[n+4] = self.pts[n,1]
+        """
         self.tempx[0]=self.xmin 
         self.tempx[1]=self.xmax
         self.tempx[2]=self.xmax 
@@ -150,6 +156,7 @@ class MeshViewer(object):
         
         self.tri[0] = [0,1,2]
         self.tri[1] = [0,2,3]
+        #"""
         
         self.nt += 2
         return
@@ -177,34 +184,35 @@ class MeshViewer(object):
         mmark = " "
         if self.verbose:
             mmark = 'o'
-        for i,el in enumerate(tris):
+        for i,el in enumerate(tris[3:]):
             #print el
-            elx = el[0]-1
-            ely = el[1]-1
-            elz = el[2]-1
-            xpts = np.asarray([ pts[elx,0],pts[ely,0],pts[elz,0], pts[elx,0] ])
-            ypts = np.asarray([ pts[elx,1],pts[ely,1],pts[elz,1], pts[elx,1] ])
-            plt.plot(xpts,ypts )
-            avgx =  xpts[:-1].sum()/len(xpts[:-1])
-            avgy = ypts[:-1].sum()/len(ypts[:-1])
-            plt.plot(pts[elx,0],
-                     pts[elx,1],marker = mmark, color = 'black')
-            plt.plot(pts[ely,0],
-                     pts[ely,1],marker = mmark, color = 'black' )
-            plt.plot(pts[elz,0],
-                     pts[elz,1],marker = mmark, color = 'black' )
-            plt.plot(avgx,
-                     avgy, color = 'black' )
-            if self.verbose:
-                plt.annotate(str(elx), 
-                         xy=(pts[elx,0],pts[elx,1]))
-                plt.annotate(str(ely), 
-                         xy=(pts[ely,0],pts[ely,1]))
-                plt.annotate(str(ely), 
-                         xy=(pts[ely,0],pts[ely,1]))
-                plt.annotate(str(elz), 
-                         xy=(pts[elz,0],pts[elz,1]))
-                plt.annotate('{}'.format(i), xy=(avgx,avgy))
+            if True:#not np.any( [ (pe in self.supernodes) for pe in el ]):
+                elx = el[0]-1
+                ely = el[1]-1
+                elz = el[2]-1
+                xpts = np.asarray([ pts[elx,0],pts[ely,0],pts[elz,0], pts[elx,0] ])
+                ypts = np.asarray([ pts[elx,1],pts[ely,1],pts[elz,1], pts[elx,1] ])
+                plt.plot(xpts,ypts )
+                avgx =  xpts[:-1].sum()/len(xpts[:-1])
+                avgy = ypts[:-1].sum()/len(ypts[:-1])
+                plt.plot(pts[elx,0],
+                         pts[elx,1],marker = mmark, color = 'black')
+                plt.plot(pts[ely,0],
+                         pts[ely,1],marker = mmark, color = 'black' )
+                plt.plot(pts[elz,0],
+                         pts[elz,1],marker = mmark, color = 'black' )
+                plt.plot(avgx,
+                         avgy, color = 'black' )
+                if self.verbose:
+                    plt.annotate(str(elx), 
+                             xy=(pts[elx,0],pts[elx,1]))
+                    plt.annotate(str(ely), 
+                             xy=(pts[ely,0],pts[ely,1]))
+                    plt.annotate(str(ely), 
+                             xy=(pts[ely,0],pts[ely,1]))
+                    plt.annotate(str(elz), 
+                             xy=(pts[elz,0],pts[elz,1]))
+                    plt.annotate('{}'.format(i), xy=(avgx,avgy))
         if which is not None:
             for i,el in enumerate(tris):
                 #print el
@@ -320,6 +328,19 @@ class MeshViewer(object):
         
     
 if __name__ == """__main__""":
-    self = MeshViewer()
-    print 'plot it'
+    self = MeshViewer(verbose=False)
     self.plot_mesh()
+#    plt.close()
+#    triang=triplt.Triangulation(self.pts[:,0],
+#                         self.pts[:,1],
+#                         self.tri)
+#    
+#    
+#    # Setup plot and callbacks.
+#    plt.subplot(111, aspect='equal')
+#    plt.triplot(triang, 'bo-')
+#    polygon = Polygon([[0, 0], [0, 0]], facecolor='y')  # dummy data for xs,ys
+#    update_polygon(-1)
+#    plt.gca().add_patch(polygon)
+#    plt.gcf().canvas.mpl_connect('motion_notify_event', motion_notify)
+#    plt.show()
